@@ -1,0 +1,71 @@
+{
+  "name": "cross-platform-ats",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "blitz dev",
+    "build": "blitz prisma generate && blitz build",
+    "start": "blitz start -H 0.0.0.0 -p ${PORT:-8080}",
+    "studio": "blitz prisma studio",
+    "lint": "eslint --ignore-path .gitignore --ext .js,.ts,.tsx .",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "prepare": "husky install",
+    "postinstall": "blitz prisma generate"
+  },
+  "prisma": {
+    "schema": "db/schema.prisma"
+  },
+  "prettier": {
+    "semi": false,
+    "printWidth": 100
+  },
+  "lint-staged": {
+    "*.{js,ts,tsx}": [
+      "eslint --fix"
+    ]
+  },
+  "dependencies": {
+    "@ag-grid-community/client-side-row-model": "26.0.0",
+    "@ag-grid-community/core": "26.0.0",
+    "@ag-grid-community/csv-export": "26.0.0",
+    "@ag-grid-community/react": "26.0.0",
+    "@hookform/resolvers": "2.8.0",
+    "@mapbox/mapbox-gl-geocoder": "4.7.4",
+    "@material-ui/core": "4.12.3",
+    "@material-ui/icons": "4.11.2",
+    "@material-ui/lab": "4.0.0-alpha.60",
+    "@prisma/client": "2.30.0",
+    "@reduxjs/toolkit": "1.6.1",
+    "@sendgrid/mail": "7.4.7",
+    "@turf/distance": "6.5.0",
+    "aws-sdk": "2.991.0",
+    "blitz": "0.45.3",
+    "chart.js": "3.5.1",
+    "chartjs-plugin-datalabels": "2.0.0",
+    "exceljs": "4.3.0",
+    "lodash": "4.17.21",
+    "mapbox-gl": "2.6.1",
+    "moment": "2.29.1",
+    "notistack": "1.0.10",
+    "react": "18.0.0-alpha-1314299c7-20210901",
+    "react-chartjs-2": "3.0.4",
+    "react-dom": "18.0.0-alpha-1314299c7-20210901",
+    "react-hook-form": "7.13.0",
+    "react-redux": "7.2.4",
+    "xlsx": "0.17.4",
+    "zod": "3.8.1"
+  },
+  "devDependencies": {
+    "@types/react": "17.0.19",
+    "@types/react-redux": "7.1.18",
+    "eslint": "7.32.0",
+    "husky": "6.0.0",
+    "lint-staged": "10.5.4",
+    "prettier": "2.3.2",
+    "prettier-plugin-prisma": "0.15.0",
+    "pretty-quick": "3.1.1",
+    "prisma": "2.30.0",
+    "typescript": "~4.3"
+  },
+  "private": true
+}

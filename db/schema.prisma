@@ -1,0 +1,128 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+//application tracking application
+
+model Application {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model Tenants {
+  id           Int      @id @default(autoincrement())
+  customername String
+  hostname     String
+  bucketname   String
+  region       String
+  foldername   String
+  secretkey    String
+  accesskey    String
+  isdeleted    Boolean  @default(false)
+  createdat    DateTime @default(now())
+  updatedat    DateTime
+
+  Role Role[]
+
+}
+
+model User {
+  id                  Int       @id @default(autoincrement())
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+  name                String
+  email               String    @unique
+  phone               String?   @db.VarChar(50)
+  address             String?
+  city                String?
+  stateorprovince     String?
+  country             String?
+  postalcode          String?   @db.VarChar(10)
+  officephone         String?   @db.VarChar(50)
+  homephone           String?   @db.VarChar(50)
+  alternateemail      String?
+  manager             Int?
+  hashedPassword      String?
+  role                String    @default("USER")
+  profile             String?
+  tenantId            Int
+  company             String?
+  isdeleted           Boolean   @default(false)
+  users_managerTouser User?     @relation("managerTouser", fields: [manager], references: [id])
+  tokens              Token[]
+  User                User[]    @relation("managerTouser")
+  Session             Session[]
+  Review              Review[]
+}
+
+model Session {
+  id                 Int       @id @default(autoincrement())
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  expiresAt          DateTime?
+  handle             String    @unique
+  hashedSessionToken String?
+  antiCSRFToken      String?
+  publicData         String?
+  privateData        String?
+  userId             Int?
+  user               User?     @relation(fields: [userId], references: [id])
+}
+
+model Token {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  hashedToken String
+  type        String
+  expiresAt   DateTime
+  sentTo      String
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id])
+
+  @@unique([hashedToken, type])
+}
+
+model Role {
+  id          Int      @id @default(autoincrement())
+  tenantid    Int
+  name        String
+  description String
+  isdeleted   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  tenants     Tenants  @relation(fields: [tenantid], references: [id])
+}
+
+model Job {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+  Review      Review[]
+  company     String
+  description String
+  experience  Int
+  title       String
+  isdeleted   Boolean  @default(false)
+  isactive    Boolean  @default(true)
+
+}
+
+model Review {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  jobId     Int
+  company   String
+  status    String
+  userId    Int
+  job       Job      @relation(fields: [jobId], references: [id])
+  User      User     @relation(fields: [userId], references: [id])
+}
